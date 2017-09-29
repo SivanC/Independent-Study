@@ -1,0 +1,22 @@
+{
+  "name": "jsandreact",
+  "version": "1.0.0",
+  "description": "Web app Independent Study in React",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SivanC/Independent-Study.git"
+  },
+  "author": "Sivan Cooperman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SivanC/Independent-Study/issues"
+  },
+  "homepage": "https://github.com/SivanC/Independent-Study#readme",
+  "dependencies": {
+    "webpack": "^3.6.0"
+  }
+}
