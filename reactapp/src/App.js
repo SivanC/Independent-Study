@@ -1,20 +1,43 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {StackNavigator} from 'react-navigation';
+
+const Layout = StackNavigator({
+  Main: {screen: App}, 
+  Alt: {screen: Alt}
+});
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  static navigationOptions = {
+    title: 'This is a title'
+  }
+
   render() {
+    const {navigate} = this.props.navigation;
+    return(
+      <button type='button' onClick = {() => navigate('Alt', {id: '2'})}>Click me</button>
+    )
+  }
+}
+
+class Alt extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {};
+  }
+
+  static navigationOptions = {
+    title: 'This is the alt screen'
+  }
+  render() {
+    const {navigate} = this.props.navigation;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+      <button onClick = {() => navigate('App', {id: 1})}>Go places</button>
+    )
   }
 }
 
