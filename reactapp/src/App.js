@@ -1,43 +1,89 @@
 import React, { Component } from 'react';
-import {StackNavigator} from 'react-navigation';
-
-const Layout = StackNavigator({
-  Main: {screen: App}, 
-  Alt: {screen: Alt}
-});
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+
+    events: [], 
+    items: [], 
+
+    dateName: 3, 
+    dateMonth: 11, 
+    dateDay: 29, 
+    dateYear: 2020,
+
+    dayList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    };
+    this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
+
+    this.handleTomorrow = this.handleTomorrow.bind(this);
   }
 
-  static navigationOptions = {
-    title: 'This is a title'
+  handleTomorrow(event) {
+
+    event.preventDefault();
+
+    const phDay = this.state.dateDay;
+    const phMonth = this.state.dateMonth;
+    const phYear = this.state.dateYear;
+
+    if (this.state.dateMonth == 0 || this.state.dateMonth == 2 || this.state.dateMonth == 4 || this.state.dateMonth == 6 || this.state.dateMonth == 7
+    || this.state.dateMonth == 9 || this.state.dateMonth == 11) {
+      if (this.state.dateDay < 31) {
+        this.setState({dateDay: phDay + 1});
+      } else {
+        this.setState({dateDay: 1});
+        if (this.state.dateMonth != 11) {
+          this.setState({dateMonth: phMonth + 1});
+        } else {
+          this.setState({dateMonth: 1});
+          this.setState({dateYear: phYear + 1});
+        }
+      }
+    } 
+
+    else if (this.state.dateMonth == 3 || this.state.dateMonth == 5 || this.state.dateMonth == 8 || this.state.dateMonth == 10) {
+      if (this.state.dateDay < 30) {
+        this.setState({dateDay: phDay + 1});
+      } else if (this.state.dateDay == 30) {
+        this.setState({dateDay: 1});
+        this.setState({dateMonth: phMonth + 1});
+      } 
+    }
+
+    else {
+      if (this.state.dateDay < 28) {
+        this.setState({dateDay: phDay + 1});
+      } else if (this.state.dateDay == 28 && this.state.dateYear % 4 == 0) {
+        this.setState({dateDay: phDay + 1});
+      } else {
+        this.setState({dateDay: 1});
+        this.setState({dateMonth: phMonth + 1})
+      }
+    }
+    
   }
 
   render() {
-    const {navigate} = this.props.navigation;
     return(
-      <button type='button' onClick = {() => navigate('Alt', {id: '2'})}>Click me</button>
-    )
-  }
-}
-
-class Alt extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {};
-  }
-
-  static navigationOptions = {
-    title: 'This is the alt screen'
-  }
-  render() {
-    const {navigate} = this.props.navigation;
-    return (
-      <button onClick = {() => navigate('App', {id: 1})}>Go places</button>
-    )
+      <div>
+        <div sub='date'>
+          <p>{this.dateForm}</p>
+          <button onClick = {this.handleTomorrow}>Tomorrow</button>
+          <button>Yesterday</button>
+        </div>
+        <div sub='lists'>
+          <p>Events:</p>
+          <ol>
+          </ol>
+          <p>Items:</p>
+          <ol>
+          </ol>
+        </div>
+      </div>
+      )
   }
 }
 
