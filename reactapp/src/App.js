@@ -9,13 +9,15 @@ class App extends Component {
     items: [], 
 
     dateName: 3, 
-    dateMonth: 11, 
-    dateDay: 29, 
+    dateMonth: 1, 
+    dateDay: 27, 
     dateYear: 2020,
 
     dayList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    dateDisplay: this.dateForm
     };
+
     this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
 
     this.handleTomorrow = this.handleTomorrow.bind(this);
@@ -28,6 +30,7 @@ class App extends Component {
     const phDay = this.state.dateDay;
     const phMonth = this.state.dateMonth;
     const phYear = this.state.dateYear;
+    const phName = this.state.dateName;
 
     if (this.state.dateMonth == 0 || this.state.dateMonth == 2 || this.state.dateMonth == 4 || this.state.dateMonth == 6 || this.state.dateMonth == 7
     || this.state.dateMonth == 9 || this.state.dateMonth == 11) {
@@ -38,7 +41,7 @@ class App extends Component {
         if (this.state.dateMonth != 11) {
           this.setState({dateMonth: phMonth + 1});
         } else {
-          this.setState({dateMonth: 1});
+          this.setState({dateMonth: 0});
           this.setState({dateYear: phYear + 1});
         }
       }
@@ -63,14 +66,20 @@ class App extends Component {
         this.setState({dateMonth: phMonth + 1})
       }
     }
-    
+    if (this.state.dateName == 6) {
+      this.setState({dateName: 0});
+    } else {
+      this.setState({dateName: phName + 1});
+    }
+  this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
+  this.setState({dateDisplay: this.dateForm});
   }
 
   render() {
     return(
       <div>
         <div sub='date'>
-          <p>{this.dateForm}</p>
+          <p>{this.state.dateDisplay}</p>
           <button onClick = {this.handleTomorrow}>Tomorrow</button>
           <button>Yesterday</button>
         </div>
