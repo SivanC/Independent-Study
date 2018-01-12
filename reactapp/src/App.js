@@ -53,7 +53,7 @@ class App extends Component {
       } else if (this.state.dateDay == 30) {
         this.setState({dateDay: 1});
         this.setState({dateMonth: phMonth + 1});
-      } 
+      }
     }
 
     else {
@@ -85,14 +85,36 @@ class App extends Component {
         </div>
         <div sub='lists'>
           <p>Events:</p>
-          <ol>
+          <ol type='1'>
+          <Task taskName='Stav Party' taskLoc='Stav&apos;s House' taskStart='6:30' taskEnd='7:00' isEvent='true'/>
           </ol>
           <p>Items:</p>
-          <ol>
-          </ol>
+          <ul>
+          <Task taskDesc='do stuff' isEvent='false'/>
+          </ul>
         </div>
       </div>
       )
+  }
+}
+
+class Task extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+  render() {
+    if (this.props.isEvent == 'true') {
+      return(
+        <p>{this.props.taskName}, {this.props.taskLoc}, {this.props.taskStart}-{this.props.taskEnd}</p>
+       )
+    } else {
+      return (
+        <p>{this.props.taskDesc}</p>
+      )
+    }
   }
 }
 
