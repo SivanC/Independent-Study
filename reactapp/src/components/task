@@ -1,0 +1,36 @@
+import React, {Component} from 'react';
+
+class Task extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      taskName: 'title',
+      taskLoc: '',
+      taskStart: '',
+      taskEnd: '',
+      taskDesc: 'hello',
+      isEvent: 'true',
+      dayID: this.props.taskID[0] + this.props.task[1],
+      monthID: this.props.taskID[2] + this.props.task[3],
+      yearID: this.props.taskID[4] + this.props.taskID[5] + this.props.taskID[6] + this.props.taskID[7]
+    };
+  }
+
+  render() {
+    if (dayID == App.state.dateDay && monthID == App.state.dateMonth && yearID == App.state.dateYear) {
+      if (this.state.isEvent ===  'true') {
+        return(
+          <p>{this.state.taskName}, {this.state.taskLoc}, {this.state.taskStart}-{this.state.taskEnd}</p>
+         )
+      } else {
+        return (
+          <p>{this.state.taskDesc}</p>
+      )
+    }
+  } else {
+    return;
+    }
+  }
+}
+
+export default Task;

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import {Task} from './components/task';
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
 
     events: [], 
-    items: [], 
+    items: [],
 
     dateName: 3, 
     dateMonth: 1, 
@@ -21,55 +22,91 @@ class App extends Component {
     this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
 
     this.handleTomorrow = this.handleTomorrow.bind(this);
+    this.handleYesterday = this.handleYesterday.bind(this);
   }
 
   handleTomorrow(event) {
 
     event.preventDefault();
 
-    const phDay = this.state.dateDay;
-    const phMonth = this.state.dateMonth;
-    const phYear = this.state.dateYear;
-    const phName = this.state.dateName;
-
-    if (this.state.dateMonth == 0 || this.state.dateMonth == 2 || this.state.dateMonth == 4 || this.state.dateMonth == 6 || this.state.dateMonth == 7
-    || this.state.dateMonth == 9 || this.state.dateMonth == 11) {
+    if (this.state.dateMonth === 0 || this.state.dateMonth === 2 || this.state.dateMonth === 4 || this.state.dateMonth === 6 || this.state.dateMonth === 7
+    || this.state.dateMonth === 9 || this.state.dateMonth === 11) {
       if (this.state.dateDay < 31) {
-        this.setState({dateDay: phDay + 1});
+        this.setState({dateDay: this.state.dateDay + 1});
       } else {
         this.setState({dateDay: 1});
-        if (this.state.dateMonth != 11) {
-          this.setState({dateMonth: phMonth + 1});
+        if (this.state.dateMonth !== 11) {
+          this.setState({dateMonth: this.state.dateMonth + 1});
         } else {
           this.setState({dateMonth: 0});
-          this.setState({dateYear: phYear + 1});
+          this.setState({dateYear: this.state.dateYear + 1});
         }
       }
     } 
 
-    else if (this.state.dateMonth == 3 || this.state.dateMonth == 5 || this.state.dateMonth == 8 || this.state.dateMonth == 10) {
+    else if (this.state.dateMonth === 3 || this.state.dateMonth === 5 || this.state.dateMonth === 8 || this.state.dateMonth === 10) {
       if (this.state.dateDay < 30) {
-        this.setState({dateDay: phDay + 1});
-      } else if (this.state.dateDay == 30) {
+        this.setState({dateDay: this.state.dateDay + 1});
+      } else if (this.state.dateDay === 30) {
         this.setState({dateDay: 1});
-        this.setState({dateMonth: phMonth + 1});
+        this.setState({dateMonth: this.state.dateMonth + 1});
       }
     }
 
     else {
       if (this.state.dateDay < 28) {
-        this.setState({dateDay: phDay + 1});
-      } else if (this.state.dateDay == 28 && this.state.dateYear % 4 == 0) {
-        this.setState({dateDay: phDay + 1});
+        this.setState({dateDay: this.state.dateDay + 1});
+      } else if (this.state.dateDay === 28 && this.state.dateYear % 4 === 0) {
+        this.setState({dateDay: this.state.dateDay + 1});
       } else {
         this.setState({dateDay: 1});
-        this.setState({dateMonth: phMonth + 1})
+        this.setState({dateMonth: this.state.dateMonth + 1})
       }
     }
-    if (this.state.dateName == 6) {
+    if (this.state.dateName === 6) {
       this.setState({dateName: 0});
     } else {
-      this.setState({dateName: phName + 1});
+      this.setState({dateName: this.state.dateName + 1});
+    }
+  this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
+  this.setState({dateDisplay: this.dateForm});
+  }
+
+  handleYesterday(event) {
+    event.preventDefault();
+
+    if (this.state.dateDay === 1) {
+      if (this.state.dateMonth - 1 === 0 || this.state.dateMonth - 1 === 2 ||
+        this.state.dateMonth - 1 === 4 || this.state.dateMonth - 1 === 6 ||
+        this.state.dateMonth - 1 === 7 || this.state.dateMonth - 1 === 9 ||
+        this.state.dateMonth === 0) {
+          this.setState({dateDay: 31});
+          if (this.state.dateMonth === 0) {
+            this.setState({dateYear: this.state.dateYear - 1});
+            this.setState({dateMonth: 11});
+          } else {
+            this.setState({dateMonth: this.state.dateMonth - 1});
+          }
+      } else if (this.state.dateMonth - 1 === 3 || this.state.dateMonth- 1 === 5 ||
+        this.state.dateMonth- 1 === 8 || this.state.dateMonth- 1 === 10) {
+          this.setState({dateDay: 30});
+          this.setState({dateMonth: this.state.dateMonth - 1});
+      } else if (this.state.dateMonth - 1 === 1) {
+        if (this.state.dateYear % 4 === 0) {
+          this.setState({dateDay: 29});
+          this.setState({dateMonth: 1});
+        } else {
+          this.setState({dateDay: 28});
+          this.setState({dateMonth: 1});
+        }
+      }
+    } else {
+      this.setState({dateDay: this.state.dateDay - 1});
+    }
+    if (this.state.dateName === 0) {
+      this.setState({dateName: 6});
+    }  else {
+      this.setState({dateName: this.state.dateName +-1});
     }
   this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
   this.setState({dateDisplay: this.dateForm});
@@ -81,40 +118,20 @@ class App extends Component {
         <div sub='date'>
           <p>{this.state.dateDisplay}</p>
           <button onClick = {this.handleTomorrow}>Tomorrow</button>
-          <button>Yesterday</button>
+          <button onClick = {this.handleYesterday}>Yesterday</button>
         </div>
         <div sub='lists'>
           <p>Events:</p>
           <ol type='1'>
-          <Task taskName='Stav Party' taskLoc='Stav&apos;s House' taskStart='6:30' taskEnd='7:00' isEvent='true'/>
+          <Task taskID='00000000'/>
           </ol>
           <p>Items:</p>
           <ul>
-          <Task taskDesc='do stuff' isEvent='false'/>
+          <Task/>
           </ul>
         </div>
       </div>
       )
-  }
-}
-
-class Task extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  render() {
-    if (this.props.isEvent == 'true') {
-      return(
-        <p>{this.props.taskName}, {this.props.taskLoc}, {this.props.taskStart}-{this.props.taskEnd}</p>
-       )
-    } else {
-      return (
-        <p>{this.props.taskDesc}</p>
-      )
-    }
   }
 }
 
