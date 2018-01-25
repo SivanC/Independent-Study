@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Task} from './components/task';
 
 export class App extends Component {
   constructor(props) {
@@ -23,6 +22,7 @@ export class App extends Component {
 
     this.handleTomorrow = this.handleTomorrow.bind(this);
     this.handleYesterday = this.handleYesterday.bind(this);
+    this.giveState = this.giveState.bind(this);
   }
 
   handleTomorrow(event) {
@@ -112,9 +112,16 @@ export class App extends Component {
   this.setState({dateDisplay: this.dateForm});
   }
 
-  render() {
+  giveState() {
     return(
-      <div>
+      [this.state.dateDay, this.state.dateMonth, this.state.dateYear, this.state.dateName]
+      )
+  }
+
+  render() {
+    var stateInfo = this.giveState();
+    return(
+      [<div>
         <div sub='date'>
           <p>{this.state.dateDisplay}</p>
           <button onClick = {this.handleTomorrow}>Tomorrow</button>
@@ -127,11 +134,50 @@ export class App extends Component {
           </ol>
           <p>Items:</p>
           <ul>
-          <Task/>
+          <Task taskID='04182001'/>
           </ul>
         </div>
-      </div>
+      </div>,
+
+      stateInfo]
       )
+  }
+}
+
+class Task extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+      taskName: 'title',
+      taskLoc: '',
+      taskStart: '',
+      taskEnd: '',
+      taskDesc: 'hello',
+      isEvent: 'true',
+
+      dayID: this.props.taskID[0] + this.props.taskID[1],
+      monthID: this.props.taskID[2] + this.props.taskID[3],
+      yearID: this.props.taskID[4] + this.props.taskID[5] + this.props.taskID[6] + this.props.taskID[7],
+
+      dateInfo: App.renderComponent[1]
+    };
+  }
+
+  render() {
+    if (this.state.dayID == dateInfo[0] && this.state.monthID == dateInfo[1] && this.state.yearID == dateInfo[2]) {
+      if (this.state.isEvent ===  'true') {
+        return(
+          <p>{this.state.taskName}, {this.state.taskLoc}, {this.state.taskStart}-{this.state.taskEnd}</p>
+         )
+      } else {
+        return (
+          <p>{this.state.taskDesc}</p>
+      )
+    }
+  } else {
+    return;
+    }
   }
 }
 
