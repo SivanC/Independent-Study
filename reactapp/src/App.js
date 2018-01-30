@@ -9,20 +9,28 @@ export class App extends Component {
     items: [],
 
     dateName: 3, 
-    dateMonth: 1, 
-    dateDay: 27, 
+    dateMonth: 6, 
+    dateDay: 18, 
     dateYear: 2020,
 
     dayList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    dateDisplay: this.dateForm
+    dateDisplay: null
     };
 
     this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
 
     this.handleTomorrow = this.handleTomorrow.bind(this);
     this.handleYesterday = this.handleYesterday.bind(this);
-    this.giveState = this.giveState.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({dateDisplay: this.dateForm});
+  }
+
+  componentDidUpdate() {
+    this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
   }
 
   handleTomorrow(event) {
@@ -68,7 +76,6 @@ export class App extends Component {
     } else {
       this.setState({dateName: this.state.dateName + 1});
     }
-  this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
   this.setState({dateDisplay: this.dateForm});
   }
 
@@ -108,20 +115,12 @@ export class App extends Component {
     }  else {
       this.setState({dateName: this.state.dateName +-1});
     }
-  this.dateForm = this.state.dayList[this.state.dateName] + ', ' + this.state.monthList[this.state.dateMonth] + ' ' + this.state.dateDay + ', ' + this.state.dateYear;
   this.setState({dateDisplay: this.dateForm});
   }
 
-  giveState() {
-    return(
-      [this.state.dateDay, this.state.dateMonth, this.state.dateYear, this.state.dateName]
-      )
-  }
-
   render() {
-    var stateInfo = this.giveState();
     return(
-      [<div>
+      <div>
         <div sub='date'>
           <p>{this.state.dateDisplay}</p>
           <button onClick = {this.handleTomorrow}>Tomorrow</button>
@@ -137,9 +136,7 @@ export class App extends Component {
           <Task taskID='04182001'/>
           </ul>
         </div>
-      </div>,
-
-      stateInfo]
+      </div>
       )
   }
 }
@@ -160,12 +157,12 @@ class Task extends Component {
       monthID: this.props.taskID[2] + this.props.taskID[3],
       yearID: this.props.taskID[4] + this.props.taskID[5] + this.props.taskID[6] + this.props.taskID[7],
 
-      dateInfo: App.renderComponent[1]
+      dateInfo: 4
     };
   }
 
   render() {
-    if (this.state.dayID == dateInfo[0] && this.state.monthID == dateInfo[1] && this.state.yearID == dateInfo[2]) {
+    if (this.state.dayID == this.state.dateInfo[0] && this.state.monthID == this.state.dateInfo[1] && this.state.yearID == this.state.dateInfo[2]) {
       if (this.state.isEvent ===  'true') {
         return(
           <p>{this.state.taskName}, {this.state.taskLoc}, {this.state.taskStart}-{this.state.taskEnd}</p>
@@ -176,7 +173,7 @@ class Task extends Component {
       )
     }
   } else {
-    return;
+    return null;
     }
   }
 }
