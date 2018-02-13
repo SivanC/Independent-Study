@@ -8,9 +8,9 @@ export class App extends Component {
     events: [], 
     items: [],
 
-    dateName: 3, 
-    dateMonth: 6, 
-    dateDay: 18, 
+    dateName: 1, 
+    dateMonth: 4, 
+    dateDay: 5, 
     dateYear: 2020,
 
     dayList: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -35,87 +35,66 @@ export class App extends Component {
 
   handleTomorrow(event) {
 
-    event.preventDefault();
-
-    if (this.state.dateMonth === 0 || this.state.dateMonth === 2 || this.state.dateMonth === 4 || this.state.dateMonth === 6 || this.state.dateMonth === 7
-    || this.state.dateMonth === 9 || this.state.dateMonth === 11) {
-      if (this.state.dateDay < 31) {
-        this.setState({dateDay: this.state.dateDay + 1});
-      } else {
-        this.setState({dateDay: 1});
-        if (this.state.dateMonth !== 11) {
-          this.setState({dateMonth: this.state.dateMonth + 1});
-        } else {
-          this.setState({dateMonth: 0});
-          this.setState({dateYear: this.state.dateYear + 1});
-        }
-      }
-    } 
-
-    else if (this.state.dateMonth === 3 || this.state.dateMonth === 5 || this.state.dateMonth === 8 || this.state.dateMonth === 10) {
-      if (this.state.dateDay < 30) {
-        this.setState({dateDay: this.state.dateDay + 1});
-      } else if (this.state.dateDay === 30) {
-        this.setState({dateDay: 1});
-        this.setState({dateMonth: this.state.dateMonth + 1});
-      }
+    switch(this.state.dateDay) {
+      case 30:
+        case 0:
+        case 2:
+        case 4:
+        case 6:
+        case 7:
+        case 9:
+          
     }
-
-    else {
-      if (this.state.dateDay < 28) {
-        this.setState({dateDay: this.state.dateDay + 1});
-      } else if (this.state.dateDay === 28 && this.state.dateYear % 4 === 0) {
-        this.setState({dateDay: this.state.dateDay + 1});
-      } else {
-        this.setState({dateDay: 1});
-        this.setState({dateMonth: this.state.dateMonth + 1})
-      }
-    }
-    if (this.state.dateName === 6) {
-      this.setState({dateName: 0});
-    } else {
-      this.setState({dateName: this.state.dateName + 1});
-    }
-  this.setState({dateDisplay: this.dateForm});
   }
 
   handleYesterday(event) {
-    event.preventDefault();
-
-    if (this.state.dateDay === 1) {
-      if (this.state.dateMonth - 1 === 0 || this.state.dateMonth - 1 === 2 ||
-        this.state.dateMonth - 1 === 4 || this.state.dateMonth - 1 === 6 ||
-        this.state.dateMonth - 1 === 7 || this.state.dateMonth - 1 === 9 ||
-        this.state.dateMonth === 0) {
-          this.setState({dateDay: 31});
-          if (this.state.dateMonth === 0) {
-            this.setState({dateYear: this.state.dateYear - 1});
+    switch (this.state.dateDay) {
+      case 1:
+        switch(this.state.dateMonth - 1) {
+          case 0:
+          case 2:
+          case 4:
+          case 6:
+          case 7:
+          case 9:
+            this.setState({dateDay: 31});
+            break;
+          case 3:
+          case 5:
+          case 8:
+          case 10:
+            this.setState({dateDay: 30});
+            break;
+          case 1:
+            if (this.state.dateYear%4 === 0){
+              this.setState({dateDay: 29});
+            } else {
+              this.setState({dateDay: 28});
+            }
+            break;
+          case -1:
+            this.setState({dateDay: 31});
             this.setState({dateMonth: 11});
-          } else {
-            this.setState({dateMonth: this.state.dateMonth - 1});
-          }
-      } else if (this.state.dateMonth - 1 === 3 || this.state.dateMonth- 1 === 5 ||
-        this.state.dateMonth- 1 === 8 || this.state.dateMonth- 1 === 10) {
-          this.setState({dateDay: 30});
-          this.setState({dateMonth: this.state.dateMonth - 1});
-      } else if (this.state.dateMonth - 1 === 1) {
-        if (this.state.dateYear % 4 === 0) {
-          this.setState({dateDay: 29});
-          this.setState({dateMonth: 1});
-        } else {
-          this.setState({dateDay: 28});
-          this.setState({dateMonth: 1});
+            this.setState({dateYear: this.state.dateYear - 1});
+            break;
+          default:
+            break;
         }
-      }
-    } else {
-      this.setState({dateDay: this.state.dateDay - 1});
+      this.setState({dateMonth: this.state.dateMonth - 1})
+      break;
+      default:
+        this.setState({dateDay: this.state.dateDay - 1});
     }
-    if (this.state.dateName === 0) {
-      this.setState({dateName: 6});
-    }  else {
-      this.setState({dateName: this.state.dateName +-1});
+
+    switch (this.state.dateName) {
+      case 0:
+        this.setState({dateName: 6});
+        break;
+      default:
+        this.setState({dateName: this.state.dateName - 1});
     }
-  this.setState({dateDisplay: this.dateForm});
+
+    this.setState({dateDisplay: this.dateForm});
   }
 
   render() {
@@ -123,8 +102,8 @@ export class App extends Component {
       <div>
         <div sub='date'>
           <p>{this.state.dateDisplay}</p>
-          <button onClick = {this.handleTomorrow}>Tomorrow</button>
           <button onClick = {this.handleYesterday}>Yesterday</button>
+          <button onClick = {this.handleTomorrow}>Tomorrow</button>
         </div>
         <div sub='lists'>
           <p>Events:</p>
